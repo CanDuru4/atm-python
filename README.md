@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/CanDuru4/ATM-Python-Best-Beginner-Hack/actions/workflows/docker-image.yml"><img src="https://img.shields.io/github/actions/workflow/status/CanDuru4/ATM-Python-Best-Beginner-Hack/docker-image.yml?branch=main&label=docker%20image" alt="Docker image build status"></a>
-  <img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="Python 3.11 or newer">
+  <img src="https://img.shields.io/badge/python-3.14-blue" alt="Python 3.14">
   <img src="https://img.shields.io/badge/flask-3.1.3-black" alt="Flask 3.1.3">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
 </p>
@@ -46,7 +46,7 @@ values that live in memory (CLI) or in the browser session (web app).
 
 **Delivery**
 
-- `Dockerfile` producing a `python:3.11-slim` image that listens on port 8080
+- `Dockerfile` producing a `python:3.14-slim` image that listens on port 8080
 - Kubernetes `Deployment` + `Service` manifests and an Argo CD `Application`
 - GitHub Actions pipeline that builds on every pull request and publishes to
   Docker Hub from `main`
@@ -54,15 +54,17 @@ values that live in memory (CLI) or in the browser session (web app).
 
 ## Tech stack
 
-Python 3.11 · Flask 3.1.3 · Docker · Kubernetes · Argo CD · GitHub Actions ·
+Python 3.14 · Flask 3.1.3 · Docker · Kubernetes · Argo CD · GitHub Actions ·
 Dependabot
 
 ## Getting started
 
 ### Prerequisites
 
-- Python 3.11 or newer. Run the project with Python 3, **not** Python 2.7 -
-  the code uses Python 3 syntax and will not run on 2.7.
+- Python 3.11 or newer for a local run. The container image and CI build on
+  Python 3.14, which is the version the app is verified against. Run the
+  project with Python 3, **not** Python 2.7 - the code uses Python 3 syntax
+  and will not run on 2.7.
 - Docker, only if you want to build or run the container image.
 
 ### Run the original terminal program
@@ -105,7 +107,7 @@ docker run --rm -p 8080:8080 -e FLASK_SECRET_KEY="$(python3 -c 'import secrets; 
 ├── ATM-Python.py              # 2020 hackathon program, terminal menu
 ├── app.py                     # Flask rewrite of the same account model
 ├── requirements.txt           # Python dependencies for app.py (pinned)
-├── Dockerfile                 # python:3.11-slim image, serves on :8080
+├── Dockerfile                 # python:3.14-slim image, serves on :8080
 ├── k8s-deployment.yaml        # Kubernetes Deployment + ClusterIP Service
 ├── argocd-app.yaml            # Argo CD Application, automated sync
 ├── docs/assets/               # README images
