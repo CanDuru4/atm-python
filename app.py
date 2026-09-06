@@ -1,7 +1,35 @@
+import os
+import secrets
+
 from flask import Flask, render_template_string, request, redirect, url_for, session
 
+BILLS = ('electric', 'gas', 'water')
+
+
+def debug_enabled():
+    """Report whether the Werkzeug interactive debugger should be enabled.
+
+    The debugger hands a remote code execution console to anyone who can reach
+    the port, and this app is packaged into a container that listens on all
+    interfaces, so it stays off unless FLASK_DEBUG explicitly opts in.
+
+    Returns:
+        bool: True when FLASK_DEBUG is set to a truthy value.
+
+    Example:
+        >>> os.environ['FLASK_DEBUG'] = '1'
+        >>> debug_enabled()
+        True
+    """
+    return os.environ.get('FLASK_DEBUG', '').strip().lower() in {'1', 'true', 'yes', 'on'}
+
+
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # Needed for session management
+
+# FLASK_SECRET_KEY keeps signed sessions valid across restarts and across
+# replicas. The random fallback keeps local runs working with no configuration
+# while making sure no usable key is ever committed to this repository.
+app.secret_key = os.environ.get('FLASK_SECRET_KEY') or secrets.token_hex(32)
 
 # HTML template for the ATM web interface
 TEMPLATE = '''
@@ -71,9 +99,19 @@ def withdraw():
 
 @app.route('/paybill', methods=['POST'])
 def paybill():
+    """Pay one of the fixed utility bills from the session balance.
+
+    The bill name arrives from the client, so it is checked against BILLS
+    before it is used as a session key; an unchecked value would otherwise
+    read or zero an unrelated session field such as the balance.
+
+    Returns:
+        str: The rendered ATM page with the outcome message.
+    """
     acc = get_account()
-    bill = request.form['bill']
-    bill_names = {'electric': 'electric', 'gas': 'gas', 'water': 'water'}
+    bill = request.form.get('bill', '')
+    if bill not in BILLS:
+        return render_template_string(TEMPLATE, balance=acc['balance'], electric=acc['electric'], gas=acc['gas'], water=acc['water'], message="Unknown bill selected.")
     bill_amount = acc[bill]
     if acc['balance'] >= bill_amount and bill_amount > 0:
         acc['balance'] -= bill_amount
@@ -87,4 +125,4 @@ def paybill():
     return render_template_string(TEMPLATE, balance=acc['balance'], electric=acc['electric'], gas=acc['gas'], water=acc['water'], message=msg)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True) 
+    app.run(host='0.0.0.0', port=8080, debug=debug_enabled()) 
