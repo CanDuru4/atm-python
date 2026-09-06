@@ -1,34 +1,62 @@
 name: Build and Push Docker image
 
+# Pull requests build the image only, so an untrusted fork can never reach the
+# Docker Hub credentials. Pushes to main (and manual dispatches) also publish.
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
+      - 'app.py'
       - 'ATM-Python.py'
       - 'Dockerfile'
       - 'requirements.txt'
       - '.github/workflows/docker-image.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app.py'
+      - 'ATM-Python.py'
+      - 'Dockerfile'
+      - 'requirements.txt'
+      - '.github/workflows/docker-image.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: canduru04/atm-python-app
 
 jobs:
-  build-and-push:
+  docker:
+    name: Build image
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Log in to Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: canduru04/atm-python-app:latest 
+      - name: Build and push Docker image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
