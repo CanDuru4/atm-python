@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/CanDuru4/ATM-Python-Best-Beginner-Hack' # Replace with your repo
+    repoURL: 'https://github.com/CanDuru4/atm-python' # Replace with your repo
     targetRevision: HEAD
     path: .
   destination:
