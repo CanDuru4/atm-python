@@ -1,7 +1,7 @@
 # ATM Python
 
 <p align="center">
-  <a href="https://github.com/CanDuru4/ATM-Python-Best-Beginner-Hack/actions/workflows/docker-image.yml"><img src="https://img.shields.io/github/actions/workflow/status/CanDuru4/ATM-Python-Best-Beginner-Hack/docker-image.yml?branch=main&label=docker%20image" alt="Docker image build status"></a>
+  <a href="https://github.com/CanDuru4/atm-python/actions/workflows/docker-image.yml"><img src="https://img.shields.io/github/actions/workflow/status/CanDuru4/atm-python/docker-image.yml?branch=main&label=docker%20image" alt="Docker image build status"></a>
   <img src="https://img.shields.io/badge/python-3.14-blue" alt="Python 3.14">
   <img src="https://img.shields.io/badge/flask-3.1.3-black" alt="Flask 3.1.3">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
