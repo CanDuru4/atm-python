@@ -167,4 +167,4 @@ MIT. See [LICENSE](LICENSE). Copyright (c) 2020-2026 Can Duru.
 
 ## Author
 
-Can Duru — [canduru.net](https://canduru.net)
+Can Duru, [canduru.net](https://canduru.net)
