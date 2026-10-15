@@ -23,7 +23,7 @@ values that live in memory (CLI) or in the browser session (web app).
 
 <p align="center">
   <a href="https://canduru.net">
-    <img src="docs/assets/canduru-banner.png" alt="Can Duru - one line of code at a time" width="221" height="90">
+    <img src="design-assets/banner/canduru-banner.png" alt="Can Duru - one line of code at a time" width="221" height="90">
   </a>
 </p>
 
@@ -117,7 +117,7 @@ and pay the electric, gas or water bill.
 ├── Dockerfile                 # python:3.14-slim image, serves on :8080
 ├── k8s-deployment.yaml        # Kubernetes Deployment + ClusterIP Service
 ├── argocd-app.yaml            # Argo CD Application, automated sync
-├── docs/assets/               # README images
+├── design-assets/banner/      # brand banner (README image)
 └── .github/
     └── workflows/
         └── docker-image.yml   # build on PR, build and push on main
