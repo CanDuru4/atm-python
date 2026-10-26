@@ -29,3 +29,10 @@ pipeline. Public repo. Stack: Python 3.14 (Docker image), Flask 3.1.3, Docker, G
 - CI path filter: only `app.py`, `ATM-Python.py`, `Dockerfile`, `requirements.txt`, and the workflow file trigger builds. Doc-only commits do not build or push.
 - Actions are pinned to commit SHAs with the release tag in a trailing comment; keep that form when editing the workflow. PR builds never log in to Docker Hub; the `DOCKERHUB_USERNAME` / `DOCKERHUB_TOKEN` secrets are the owner's and stay as they are.
 - The Deployment tracks mutable `:latest` with `imagePullPolicy: IfNotPresent` and has no resources or probes (documented in README "Deployment").
+
+## Validation placement and reuse (owner update 2026-10-26)
+
+- Follow the global Claude/Codex test policy and `~/Developer/personal/mac-mini/validation-economy/README.md` and `COVERAGE.md`. Focus first; full coverage only when the changed inputs require it. Docs-only policy edits need no application suite or deploy.
+- Manual heavy commands use `repo-run.py --repo <absolute checkout> --profile <profile> -- <command>` from the shared helper; choose from python / container for the actual tool. Tiny syntax checks need no reservation. Bound tool workers and reserve separate heavy phases.
+- Compatible committed-source Python/Node checks may use the owner-approved Brain `remote-run.py`, independently of the Mini, within its aggregate 2 CPU / 4 GiB hard cap. Check the repo's pinned runtime and export restrictions first; use the actual focused command with bounded workers. No credentials, production data, signing keys or uncommitted files may be sent.
+- Reuse only supported receipts with matching source, coverage, dependencies, runtime/platform and relevant environment. Preserve passed unaffected batches; count remote results only when the owning gate aggregates them. Receipts do not replace required build artifacts or OS/device/browser proof. Split or offload an impossible reservation instead of waiting indefinitely; only stop your own obsolete jobs.
